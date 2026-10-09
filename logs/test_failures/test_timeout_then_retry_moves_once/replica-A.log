@@ -1,8 +1,8 @@
-2026-10-09 15:48:46,400 server replica-A listening on port 56423 (delay_ms=2500, fault=slow-first)
+2026-10-09 15:51:06,467 server replica-A listening on port 56857 (delay_ms=2500, fault=slow-first)
 [replica-A] RECV   Increment(counter=x, delta=1) <- client                        L=2  (received L=1)
 [replica-A] APPLY  counter=x -> 1                                                 L=3
-[replica-A] RECV   Increment(counter=x, delta=1) <- client                        L=12  (received L=11)
-[replica-A] DUP    key=e5177bc9 counter=x stays 1                                 L=13
-[replica-A] SEND   IncrementReply(new_value=1) -> client                          L=14
-[replica-A] RECV   Get(counter=x) <- client                                       L=15  (received L=1)
-[replica-A] SEND   GetReply(value=1) -> client                                    L=16
+[replica-A] RECV   Increment(counter=x, delta=1) <- client                        L=5  (received L=4)
+[replica-A] DUP    key=d8de6c3f counter=x stays 1                                 L=6
+[replica-A] SEND   IncrementReply(new_value=1) -> client                          L=7
+[replica-A] RECV   Get(counter=x) <- client                                       L=8  (received L=1)
+[replica-A] SEND   GetReply(value=1) -> client                                    L=9

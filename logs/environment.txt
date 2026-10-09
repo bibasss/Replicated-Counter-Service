@@ -1,0 +1,6 @@
+ProductName:		macOS
+ProductVersion:		15.7.7
+BuildVersion:		24G720
+Python 3.9.6
+Apple M1
+8589934592
