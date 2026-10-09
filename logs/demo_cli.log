@@ -1,0 +1,17 @@
+$ python3 client.py incr likes:post-42 --by 1
+OK committed value=1 (replicas acked: 3/3, duplicate: no)
+$ python3 client.py incr likes:post-42 --by 1 --key 9f3c-demo
+OK committed value=2 (replicas acked: 3/3, duplicate: no)
+$ python3 client.py incr likes:post-42 --by 1 --key 9f3c-demo   # same key reused
+OK committed value=2 (replicas acked: 3/3, duplicate: yes)
+$ python3 client.py get likes:post-42
+value=2
+# kill replica-B
+$ python3 client.py incr likes:post-42 --by 1
+OK committed value=3 (replicas acked: 2/3, duplicate: no)
+# kill replica-C
+$ python3 client.py incr likes:post-42 --by 1
+FAILED not committed (replicas acked: 1/3, need 2; errors: UNAVAILABLE, UNAVAILABLE)
+exit code: 1
+$ python3 client.py --targets localhost:50051 get likes:post-42   # surviving replica-A
+value=4

@@ -1,14 +1,23 @@
-"""Counter client with deadlines, bounded retries and idempotency keys.
+"""Counter client: deadlines, bounded retries, idempotency keys, quorum writes.
+
+Increment is sent to every replica with the same idempotency key and is
+reported as committed only when a majority (2 of 3) acknowledged it.
+Get reads from a single replica (the first one that answers).
 
 Usage:
     python3 client.py incr likes:post-42 --by 1 [--key KEY]
     python3 client.py get likes:post-42
+    python3 client.py --targets localhost:50051 incr x      # single replica
 """
 import argparse
 import logging
 import sys
 import time
 import uuid
+from collections import Counter
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from dataclasses import dataclass, field
+from typing import List, Optional
 
 import grpc
 
@@ -18,6 +27,7 @@ from clocks import LamportClock
 
 log = logging.getLogger("client")
 
+DEFAULT_TARGETS = "localhost:50051,localhost:50052,localhost:50053"
 TIMEOUT_S = 2.0
 BACKOFF_S = (0.2, 0.4, 0.8)      # one pause per retry -> at most 3 retries
 RETRYABLE = {grpc.StatusCode.DEADLINE_EXCEEDED, grpc.StatusCode.UNAVAILABLE}
@@ -34,24 +44,38 @@ def describe(message):
     return f"GetReply(value={message.value})"
 
 
-class CounterClient:
-    def __init__(self, target="localhost:50051", name="client", timeout=TIMEOUT_S,
-                 backoff=BACKOFF_S, log_path=None, echo=False):
-        self.name = name
-        self._target = target
-        self._channel = grpc.insecure_channel(target)
-        self._stub = counter_pb2_grpc.CounterStub(self._channel)
-        self._timeout = timeout
-        self._backoff = backoff
-        self._clock = LamportClock(name, log_path, echo)
+@dataclass
+class IncrementResult:
+    committed: bool                  # True when a majority acknowledged
+    new_value: Optional[int]         # value agreed by the acks; None if not committed
+    was_duplicate: bool              # every ack said "already applied"
+    acks: int
+    replicas: int
+    errors: List[str] = field(default_factory=list)
 
-    def _call(self, method, request):
-        """One RPC with a deadline; on a retryable error retry with exponential
-        backoff. The same request (same idempotency key) is sent every time,
-        only its Lamport timestamp is refreshed per attempt."""
-        attempts = len(self._backoff) + 1
+
+class CounterClient:
+    def __init__(self, targets=DEFAULT_TARGETS, name="client", timeout=TIMEOUT_S,
+                 backoff=BACKOFF_S, log_path=None, echo=False):
+        if isinstance(targets, str):
+            targets = targets.split(",")
+        self.name = name
+        self._timeout = timeout
+        self._backoff = tuple(backoff)
+        self._channels = [grpc.insecure_channel(t) for t in targets]
+        self._replicas = [(t, counter_pb2_grpc.CounterStub(ch))
+                          for t, ch in zip(targets, self._channels)]
+        self.majority = len(self._replicas) // 2 + 1
+        self._clock = LamportClock(name, log_path, echo)
+        self._pool = ThreadPoolExecutor(max_workers=2 * len(self._replicas))
+
+    def _call(self, target, method, request, retry=True):
+        """One RPC to one replica with a deadline; on a retryable error retry
+        with exponential backoff. The same request (same idempotency key) is
+        sent every time, only its Lamport timestamp is refreshed per attempt."""
+        attempts = len(self._backoff) + 1 if retry else 1
         for attempt in range(1, attempts + 1):
-            request.lamport_time = self._clock.send(f"{describe(request)} -> {self._target}")
+            request.lamport_time = self._clock.send(f"{describe(request)} -> {target}")
             try:
                 reply, call = method.with_call(
                     request, timeout=self._timeout, metadata=(("client-name", self.name),))
@@ -59,28 +83,73 @@ class CounterClient:
                 if err.code() not in RETRYABLE or attempt == attempts:
                     raise
                 pause = self._backoff[attempt - 1]
-                log.warning("attempt %d/%d to %s failed with %s, retrying in %.1fs",
-                            attempt, attempts, self._target, err.code().name, pause)
+                log.debug("attempt %d/%d to %s failed with %s, retrying in %.1fs",
+                          attempt, attempts, target, err.code().name, pause)
                 time.sleep(pause)
                 continue
-            replica = dict(call.trailing_metadata() or ()).get("replica-name", self._target)
+            replica = dict(call.trailing_metadata() or ()).get("replica-name", target)
             self._clock.receive(reply.lamport_time, f"{describe(reply)} <- {replica}")
             return reply
 
-    def incr(self, counter_id, delta, key=None):
+    def incr(self, counter_id, delta, key=None, wait_all=False):
+        """Quorum write. Returns as soon as the outcome is known (a majority
+        acked, or a majority can no longer be reached); with wait_all=True it
+        waits for every replica, which gives an exact ack count."""
         # One key per logical operation: generated here, before the first
-        # attempt, and reused by every retry inside _call.
+        # attempt, and reused by every retry and every replica.
         if key is None:
             key = str(uuid.uuid4())
-        request = counter_pb2.IncrementRequest(
-            counter_id=counter_id, delta=delta, idempotency_key=key)
-        return self._call(self._stub.Increment, request)
+        futures = [
+            self._pool.submit(
+                self._call, target, stub.Increment,
+                counter_pb2.IncrementRequest(
+                    counter_id=counter_id, delta=delta, idempotency_key=key))
+            for target, stub in self._replicas
+        ]
+        total = len(futures)
+        acks, errors = [], []
+        for fut in as_completed(futures):
+            try:
+                acks.append(fut.result())
+            except grpc.RpcError as err:
+                errors.append(err.code().name)
+            decided = len(acks) >= self.majority or len(errors) > total - self.majority
+            if decided and not wait_all:
+                break
+
+        committed = len(acks) >= self.majority
+        new_value = Counter(a.new_value for a in acks).most_common(1)[0][0] if committed else None
+        return IncrementResult(
+            committed=committed,
+            new_value=new_value,
+            was_duplicate=committed and all(a.was_duplicate for a in acks),
+            acks=len(acks),
+            replicas=total,
+            errors=errors,
+        )
 
     def get(self, counter_id):
-        return self._call(self._stub.Get, counter_pb2.GetRequest(counter_id=counter_id))
+        """Read from any single replica: try them in order, each round with
+        one attempt per replica, and back off between rounds."""
+        request = counter_pb2.GetRequest(counter_id=counter_id)
+        last_error = None
+        for pause in self._backoff + (None,):
+            for target, stub in self._replicas:
+                try:
+                    return self._call(target, stub.Get, request, retry=False)
+                except grpc.RpcError as err:
+                    if err.code() not in RETRYABLE:
+                        raise
+                    last_error = err
+            if pause is not None:
+                time.sleep(pause)
+        raise last_error
 
     def close(self):
-        self._channel.close()
+        # Wait for calls still in flight to the slowest replica.
+        self._pool.shutdown(wait=True)
+        for channel in self._channels:
+            channel.close()
         self._clock.close()
 
     def __enter__(self):
@@ -92,7 +161,8 @@ class CounterClient:
 
 def main():
     parser = argparse.ArgumentParser(description="Counter client")
-    parser.add_argument("--target", default="localhost:50051", help="host:port of the replica")
+    parser.add_argument("--targets", default=DEFAULT_TARGETS,
+                        help="comma-separated host:port list of replicas")
     parser.add_argument("--name", default="client-1", help="client name used in event logs")
     parser.add_argument("--trace", action="store_true", help="print Lamport event lines to stderr")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -108,12 +178,18 @@ def main():
     args = parser.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(name)s %(message)s")
 
-    with CounterClient(args.target, args.name, echo=args.trace) as client:
+    with CounterClient(args.targets, args.name, echo=args.trace) as client:
         try:
             if args.command == "incr":
-                reply = client.incr(args.counter_id, args.by, args.key)
-                duplicate = "yes" if reply.was_duplicate else "no"
-                print(f"OK value={reply.new_value} (duplicate: {duplicate})")
+                r = client.incr(args.counter_id, args.by, args.key, wait_all=True)
+                acked = f"replicas acked: {r.acks}/{r.replicas}"
+                if r.committed:
+                    duplicate = "yes" if r.was_duplicate else "no"
+                    print(f"OK committed value={r.new_value} ({acked}, duplicate: {duplicate})")
+                else:
+                    print(f"FAILED not committed ({acked}, need {client.majority}; "
+                          f"errors: {', '.join(r.errors)})", file=sys.stderr)
+                    sys.exit(1)
             else:
                 reply = client.get(args.counter_id)
                 print(f"value={reply.value}" if reply.found else "not found")

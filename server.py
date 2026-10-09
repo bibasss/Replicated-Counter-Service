@@ -5,9 +5,18 @@ client's idempotency key. The store and the counters are protected by one
 lock, so "check the key" and "apply the delta" form a single critical section.
 
 Every receive, apply and send is a Lamport clock event (see clocks.py).
+
+Fault injection (--fault, used by tests/test_failures.py):
+  slow-first          delay only the first reply for each key by --delay-ms
+                      (the retry with the same key is answered at once)
+  crash-before-apply  the process dies on its first Increment, before applying
+  crash-after-apply   the process dies on its first Increment, after applying
+                      but before replying
+Without --fault, --delay-ms delays every Increment reply.
 """
 import argparse
 import logging
+import os
 import threading
 import time
 from concurrent import futures
@@ -26,9 +35,18 @@ def _sender(context):
     return dict(context.invocation_metadata()).get("client-name", "?")
 
 
+FAULTS = ("none", "slow-first", "crash-before-apply", "crash-after-apply")
+
+
+def _crash():
+    # Simulate a process crash: no cleanup, no reply, state is lost.
+    os._exit(1)
+
+
 class CounterServicer(counter_pb2_grpc.CounterServicer):
-    def __init__(self, name="replica", clock=None, delay_ms=0):
+    def __init__(self, name="replica", clock=None, delay_ms=0, fault="none"):
         self._name = name
+        self._fault = fault
         self._clock = clock or LamportClock(name)
         self._lock = threading.Lock()
         self._values = {}        # counter_id -> int
@@ -45,6 +63,9 @@ class CounterServicer(counter_pb2_grpc.CounterServicer):
             context.abort(grpc.StatusCode.INVALID_ARGUMENT,
                           "counter_id and idempotency_key are required")
 
+        if self._fault == "crash-before-apply":
+            _crash()
+
         with self._lock:
             seen = self._seen.get(request.idempotency_key)
             if seen is not None:
@@ -60,9 +81,12 @@ class CounterServicer(counter_pb2_grpc.CounterServicer):
                 duplicate = False
                 self._clock.event("APPLY", f"counter={request.counter_id} -> {value}")
 
+        if self._fault == "crash-after-apply":
+            _crash()
+
         # Fault injection: the write is already applied, only the reply is late.
         # This models the "executed, but the reply did not arrive in time" case.
-        if self._delay_s:
+        if self._delay_s and (self._fault != "slow-first" or not duplicate):
             time.sleep(self._delay_s)
 
         lamport = self._clock.send(f"IncrementReply(new_value={value}) -> {sender}")
@@ -82,13 +106,13 @@ class CounterServicer(counter_pb2_grpc.CounterServicer):
         return counter_pb2.GetReply(value=value, found=found, lamport_time=lamport)
 
 
-def serve(port, name="replica", clock=None, delay_ms=0):
+def serve(port, name="replica", clock=None, delay_ms=0, fault="none"):
     """Start a server on the given port (0 = pick a free one).
 
     Returns (server, bound_port) so tests can run it in-process.
     """
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=8))
-    servicer = CounterServicer(name, clock, delay_ms)
+    servicer = CounterServicer(name, clock, delay_ms, fault)
     counter_pb2_grpc.add_CounterServicer_to_server(servicer, server)
     bound_port = server.add_insecure_port(f"[::]:{port}")
     server.start()
@@ -102,14 +126,17 @@ def main():
     parser.add_argument("--log-file", help="append Lamport event lines to this file")
     parser.add_argument("--quiet", action="store_true", help="do not print event lines to stderr")
     parser.add_argument("--delay-ms", type=int, default=0,
-                        help="delay every Increment reply by this many ms (fault injection)")
+                        help="delay Increment replies by this many ms (fault injection)")
+    parser.add_argument("--fault", choices=FAULTS, default="none",
+                        help="simulated failure, see module docstring")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(name)s %(message)s")
     name = args.name or f"replica-{args.port}"
     clock = LamportClock(name, args.log_file, echo=not args.quiet)
-    server, port = serve(args.port, name, clock, args.delay_ms)
-    log.info("%s listening on port %d (delay_ms=%d)", name, port, args.delay_ms)
+    server, port = serve(args.port, name, clock, args.delay_ms, args.fault)
+    log.info("%s listening on port %d (delay_ms=%d, fault=%s)",
+             name, port, args.delay_ms, args.fault)
     try:
         server.wait_for_termination()
     except KeyboardInterrupt:
