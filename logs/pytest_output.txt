@@ -4,26 +4,28 @@ cachedir: .pytest_cache
 rootdir: /Users/manapbeibarys/Desktop/распределенные системы/dcc-assignment2
 configfile: pytest.ini
 testpaths: tests
-collecting ... collected 19 items
+collecting ... collected 21 items
 
-tests/test_counter.py::test_increment_applies_delta PASSED               [  5%]
-tests/test_counter.py::test_duplicate_key_not_reapplied PASSED           [ 10%]
-tests/test_counter.py::test_concurrent_increments_exact PASSED           [ 15%]
-tests/test_counter.py::test_get_missing_counter PASSED                   [ 21%]
-tests/test_counter.py::test_retry_after_timeout_is_safe PASSED           [ 26%]
-tests/test_counter.py::test_majority_commit_two_acks PASSED              [ 31%]
-tests/test_counter.py::test_no_commit_below_majority PASSED              [ 36%]
-tests/test_counter.py::test_replicas_converge PASSED                     [ 42%]
-tests/test_counter.py::test_counter_ids_are_isolated PASSED              [ 47%]
-tests/test_counter.py::test_retry_storm_same_key_applied_once PASSED     [ 52%]
-tests/test_counter.py::test_request_without_key_is_rejected PASSED       [ 57%]
-tests/test_counter.py::test_negative_delta PASSED                        [ 63%]
-tests/test_failures.py::test_replica_crash_mid_request PASSED            [ 68%]
-tests/test_failures.py::test_request_duplication PASSED                  [ 73%]
-tests/test_failures.py::test_timeout_then_retry_moves_once PASSED        [ 78%]
-tests/test_failures.py::test_crash_before_apply PASSED                   [ 84%]
-tests/test_failures.py::test_crash_after_apply_before_reply PASSED       [ 89%]
-tests/test_failures.py::test_two_replicas_crash_no_commit PASSED         [ 94%]
+tests/test_counter.py::test_increment_applies_delta PASSED               [  4%]
+tests/test_counter.py::test_duplicate_key_not_reapplied PASSED           [  9%]
+tests/test_counter.py::test_concurrent_increments_exact PASSED           [ 14%]
+tests/test_counter.py::test_get_missing_counter PASSED                   [ 19%]
+tests/test_counter.py::test_retry_after_timeout_is_safe PASSED           [ 23%]
+tests/test_counter.py::test_majority_commit_two_acks PASSED              [ 28%]
+tests/test_counter.py::test_no_commit_below_majority PASSED              [ 33%]
+tests/test_counter.py::test_replicas_converge PASSED                     [ 38%]
+tests/test_counter.py::test_counter_ids_are_isolated PASSED              [ 42%]
+tests/test_counter.py::test_retry_storm_same_key_applied_once PASSED     [ 47%]
+tests/test_counter.py::test_request_without_key_is_rejected PASSED       [ 52%]
+tests/test_counter.py::test_negative_delta PASSED                        [ 57%]
+tests/test_counter.py::test_lamport_clock_rules PASSED                   [ 61%]
+tests/test_counter.py::test_lamport_trace_respects_happened_before PASSED [ 66%]
+tests/test_failures.py::test_replica_crash_mid_request PASSED            [ 71%]
+tests/test_failures.py::test_request_duplication PASSED                  [ 76%]
+tests/test_failures.py::test_timeout_then_retry_moves_once PASSED        [ 80%]
+tests/test_failures.py::test_crash_before_apply PASSED                   [ 85%]
+tests/test_failures.py::test_crash_after_apply_before_reply PASSED       [ 90%]
+tests/test_failures.py::test_two_replicas_crash_no_commit PASSED         [ 95%]
 tests/test_failures.py::test_committed_writes_survive_single_crash PASSED [100%]
 
-============================= 19 passed in 55.66s ==============================
+============================= 21 passed in 57.73s ==============================

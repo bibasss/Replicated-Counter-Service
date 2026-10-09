@@ -1,0 +1,2 @@
+lock=on   final values over 5 runs: [2000, 2000, 2000, 2000, 2000]
+lock=off  final values over 5 runs: [2000, 2000, 2000, 2000, 2000]

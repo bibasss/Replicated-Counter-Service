@@ -1,9 +1,9 @@
-2026-10-09 15:51:04,322 server replica-B listening on port 56841 (delay_ms=0, fault=none)
+2026-10-09 15:53:26,183 server replica-B listening on port 57421 (delay_ms=0, fault=none)
 [replica-B] RECV   Increment(counter=x, delta=5) <- client                        L=3  (received L=2)
 [replica-B] APPLY  counter=x -> 5                                                 L=4
 [replica-B] SEND   IncrementReply(new_value=5) -> client                          L=5
-[replica-B] RECV   Increment(counter=x, delta=5) <- client                        L=10  (received L=9)
-[replica-B] DUP    key=dup-key counter=x stays 5                                  L=11
-[replica-B] SEND   IncrementReply(new_value=5) -> client                          L=12
-[replica-B] RECV   Get(counter=x) <- client                                       L=13  (received L=1)
-[replica-B] SEND   GetReply(value=5) -> client                                    L=14
+[replica-B] RECV   Increment(counter=x, delta=5) <- client                        L=11  (received L=10)
+[replica-B] DUP    key=dup-key counter=x stays 5                                  L=12
+[replica-B] SEND   IncrementReply(new_value=5) -> client                          L=13
+[replica-B] RECV   Get(counter=x) <- client                                       L=14  (received L=1)
+[replica-B] SEND   GetReply(value=5) -> client                                    L=15

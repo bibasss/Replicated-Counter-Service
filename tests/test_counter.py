@@ -3,6 +3,7 @@
 Replicas run in-process on ephemeral ports (port 0) and are stopped after
 each test. Clients use short deadlines/backoff so failure paths stay fast.
 """
+import re
 import threading
 
 import grpc
@@ -11,6 +12,7 @@ import pytest
 import counter_pb2
 import counter_pb2_grpc
 from client import CounterClient
+from clocks import LamportClock
 from server import serve
 
 FAST = dict(timeout=0.5, backoff=(0.05, 0.1, 0.2))
@@ -220,3 +222,41 @@ def test_negative_delta(running_server):
     reply = client.incr("x", -3)
 
     assert reply.new_value == 7
+
+
+# --- Lamport clocks (Task B1) ------------------------------------------------
+
+def test_lamport_clock_rules():
+    clock = LamportClock("p")
+
+    assert clock.event("APPLY", "local") == 1          # local event: +1
+    assert clock.send("msg") == 2                      # send: +1
+    assert clock.receive(10, "msg") == 11              # max(2, 10) + 1
+    assert clock.receive(3, "msg") == 12               # max(11, 3) + 1
+
+
+EVENT = re.compile(r"^\[(\S+)\]\s+(\w+)\s+.*?L=(\d+)(?:\s+\(received L=(\d+)\))?$")
+
+
+def test_lamport_trace_respects_happened_before(tmp_path):
+    server_clock = LamportClock("replica-A", str(tmp_path / "replica-A.log"))
+    server, port = serve(0, "replica-A", server_clock)
+    client = CounterClient([f"localhost:{port}"], name="client-1",
+                           log_path=str(tmp_path / "client-1.log"), **FAST)
+    client.incr("x", 1)
+    client.incr("x", 1)
+    client.get("x")
+    client.close()
+    server.stop(0).wait()
+    server_clock.close()
+
+    sends = set()
+    for log_name in ("client-1.log", "replica-A.log"):
+        events = [EVENT.match(line).groups() for line in open(tmp_path / log_name)]
+        times = [int(t) for _, _, t, _ in events]
+        assert times == sorted(times) and len(set(times)) == len(times)  # local order
+        sends |= {(name, int(t)) for name, kind, t, _ in events if kind == "SEND"}
+        for _, kind, t, received in events:
+            if kind == "RECV":
+                assert int(t) > int(received)              # receive after send
+    assert len(sends) == 6                                 # 3 requests + 3 replies
