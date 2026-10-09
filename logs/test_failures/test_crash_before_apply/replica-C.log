@@ -1,0 +1,6 @@
+2026-10-09 15:48:54,931 server replica-C listening on port 56454 (delay_ms=0, fault=none)
+[replica-C] RECV   Increment(counter=x, delta=1) <- client                        L=4  (received L=3)
+[replica-C] APPLY  counter=x -> 1                                                 L=5
+[replica-C] SEND   IncrementReply(new_value=1) -> client                          L=6
+[replica-C] RECV   Get(counter=x) <- client                                       L=7  (received L=1)
+[replica-C] SEND   GetReply(value=1) -> client                                    L=8
