@@ -1,4 +1,4 @@
 [client-3] SEND   Get(counter=x) -> localhost:50051                              L=1
-[client-3] RECV   GetReply(value=0) <- replica-A                                 L=4  (received L=3)
-[client-3] SEND   Get(counter=y) -> localhost:50051                              L=5
+[client-3] RECV   GetReply(value=0) <- replica-A                                 L=8  (received L=7)
+[client-3] SEND   Get(counter=y) -> localhost:50051                              L=9
 [client-3] RECV   GetReply(value=1) <- replica-A                                 L=12  (received L=11)

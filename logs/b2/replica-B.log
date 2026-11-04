@@ -4,9 +4,9 @@
 [replica-B] RECV   Increment(counter=x, delta=1) <- client-1                      L=6  (received L=2)
 [replica-B] APPLY  counter=x -> 1                                                 L=7
 [replica-B] SEND   IncrementReply(new_value=1) -> client-1                        L=8
+[replica-B] RECV   Increment(counter=y, delta=1) <- client-2                      L=11  (received L=10)
+[replica-B] APPLY  counter=y -> 2                                                 L=12
+[replica-B] SEND   IncrementReply(new_value=2) -> client-2                        L=13
 [replica-B] RECV   Increment(counter=x, delta=1) <- client-1                      L=14  (received L=13)
 [replica-B] APPLY  counter=x -> 2                                                 L=15
 [replica-B] SEND   IncrementReply(new_value=2) -> client-1                        L=16
-[replica-B] RECV   Increment(counter=y, delta=1) <- client-2                      L=17  (received L=13)
-[replica-B] APPLY  counter=y -> 2                                                 L=18
-[replica-B] SEND   IncrementReply(new_value=2) -> client-2                        L=19

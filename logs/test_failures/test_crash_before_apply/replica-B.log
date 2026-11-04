@@ -1,2 +1,2 @@
-2026-10-09 15:53:35,755 server replica-B listening on port 57463 (delay_ms=0, fault=crash-before-apply)
+2026-10-16 17:27:45,707 server replica-B listening on port 57393 (delay_ms=0, fault=crash-before-apply)
 [replica-B] RECV   Increment(counter=x, delta=1) <- client                        L=3  (received L=2)

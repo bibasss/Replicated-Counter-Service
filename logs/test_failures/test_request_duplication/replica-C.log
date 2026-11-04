@@ -1,9 +1,9 @@
-2026-10-09 15:53:27,529 server replica-C listening on port 57426 (delay_ms=0, fault=none)
+2026-10-16 17:27:37,831 server replica-C listening on port 57355 (delay_ms=0, fault=none)
 [replica-C] RECV   Increment(counter=x, delta=5) <- client                        L=4  (received L=3)
 [replica-C] APPLY  counter=x -> 5                                                 L=5
 [replica-C] SEND   IncrementReply(new_value=5) -> client                          L=6
-[replica-C] RECV   Increment(counter=x, delta=5) <- client                        L=12  (received L=11)
-[replica-C] DUP    key=dup-key counter=x stays 5                                  L=13
-[replica-C] SEND   IncrementReply(new_value=5) -> client                          L=14
-[replica-C] RECV   Get(counter=x) <- client                                       L=15  (received L=1)
-[replica-C] SEND   GetReply(value=5) -> client                                    L=16
+[replica-C] RECV   Increment(counter=x, delta=5) <- client                        L=13  (received L=12)
+[replica-C] DUP    key=dup-key counter=x stays 5                                  L=14
+[replica-C] SEND   IncrementReply(new_value=5) -> client                          L=15
+[replica-C] RECV   Get(counter=x) <- client                                       L=16  (received L=1)
+[replica-C] SEND   GetReply(value=5) -> client                                    L=17

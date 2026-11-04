@@ -1,37 +1,37 @@
-2026-10-09 15:54:06,664 server replica-A listening on port 57587 (delay_ms=0, fault=none)
+2026-10-16 17:28:16,301 server replica-A listening on port 57525 (delay_ms=0, fault=none)
 [replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=2  (received L=1)
 [replica-A] APPLY  counter=run2 -> 1                                              L=3
 [replica-A] SEND   IncrementReply(new_value=1) -> client                          L=4
 [replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=11  (received L=10)
 [replica-A] APPLY  counter=run2 -> 2                                              L=12
 [replica-A] SEND   IncrementReply(new_value=2) -> client                          L=13
-[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=19  (received L=18)
-[replica-A] APPLY  counter=run2 -> 3                                              L=20
-[replica-A] SEND   IncrementReply(new_value=3) -> client                          L=21
+[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=18  (received L=17)
+[replica-A] APPLY  counter=run2 -> 3                                              L=19
+[replica-A] SEND   IncrementReply(new_value=3) -> client                          L=20
 [replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=26  (received L=25)
 [replica-A] APPLY  counter=run2 -> 4                                              L=27
 [replica-A] SEND   IncrementReply(new_value=4) -> client                          L=28
-[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=35  (received L=34)
-[replica-A] APPLY  counter=run2 -> 5                                              L=36
-[replica-A] SEND   IncrementReply(new_value=5) -> client                          L=37
-[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=42  (received L=41)
-[replica-A] APPLY  counter=run2 -> 6                                              L=43
-[replica-A] SEND   IncrementReply(new_value=6) -> client                          L=44
+[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=34  (received L=33)
+[replica-A] APPLY  counter=run2 -> 5                                              L=35
+[replica-A] SEND   IncrementReply(new_value=5) -> client                          L=36
+[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=41  (received L=40)
+[replica-A] APPLY  counter=run2 -> 6                                              L=42
+[replica-A] SEND   IncrementReply(new_value=6) -> client                          L=43
 [replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=49  (received L=48)
 [replica-A] APPLY  counter=run2 -> 7                                              L=50
 [replica-A] SEND   IncrementReply(new_value=7) -> client                          L=51
-[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=57  (received L=56)
-[replica-A] APPLY  counter=run2 -> 8                                              L=58
-[replica-A] SEND   IncrementReply(new_value=8) -> client                          L=59
-[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=63  (received L=62)
-[replica-A] APPLY  counter=run2 -> 9                                              L=64
-[replica-A] SEND   IncrementReply(new_value=9) -> client                          L=65
-[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=71  (received L=70)
-[replica-A] APPLY  counter=run2 -> 10                                             L=72
-[replica-A] SEND   IncrementReply(new_value=10) -> client                         L=73
+[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=56  (received L=55)
+[replica-A] APPLY  counter=run2 -> 8                                              L=57
+[replica-A] SEND   IncrementReply(new_value=8) -> client                          L=58
+[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=64  (received L=63)
+[replica-A] APPLY  counter=run2 -> 9                                              L=65
+[replica-A] SEND   IncrementReply(new_value=9) -> client                          L=66
+[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=72  (received L=71)
+[replica-A] APPLY  counter=run2 -> 10                                             L=73
+[replica-A] SEND   IncrementReply(new_value=10) -> client                         L=74
 [replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=79  (received L=78)
 [replica-A] APPLY  counter=run2 -> 11                                             L=80
 [replica-A] SEND   IncrementReply(new_value=11) -> client                         L=81
-[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=85  (received L=84)
-[replica-A] APPLY  counter=run2 -> 12                                             L=86
-[replica-A] SEND   IncrementReply(new_value=12) -> client                         L=87
+[replica-A] RECV   Increment(counter=run2, delta=1) <- client                     L=87  (received L=86)
+[replica-A] APPLY  counter=run2 -> 12                                             L=88
+[replica-A] SEND   IncrementReply(new_value=12) -> client                         L=89

@@ -1,28 +1,28 @@
 [client-1] SEND   Increment(counter=x, delta=1) -> localhost:50051               L=1
 [client-2] SEND   Increment(counter=y, delta=1) -> localhost:50051               L=1
 [client-3] SEND   Get(counter=x) -> localhost:50051                              L=1
-[replica-A] RECV   Get(counter=x) <- client-3                                     L=2  (received L=1)
-[replica-A] SEND   GetReply(value=0) -> client-3                                  L=3
-[client-3] RECV   GetReply(value=0) <- replica-A                                 L=4  (received L=3)
-[replica-A] RECV   Increment(counter=x, delta=1) <- client-1                      L=4  (received L=1)
-[client-3] SEND   Get(counter=y) -> localhost:50051                              L=5
-[replica-A] APPLY  counter=x -> 1                                                 L=5
-[replica-A] SEND   IncrementReply(new_value=1) -> client-1                        L=6
-[replica-A] RECV   Increment(counter=y, delta=1) <- client-2                      L=7  (received L=1)
-[replica-A] APPLY  counter=y -> 1                                                 L=8
-[replica-A] RECV   Get(counter=y) <- client-3                                     L=9  (received L=5)
-[client-1] RECV   IncrementReply(new_value=1) <- replica-A                       L=10  (received L=6)
-[replica-A] SEND   IncrementReply(new_value=1) -> client-2                        L=10
-[client-2] RECV   IncrementReply(new_value=1) <- replica-A                       L=11  (received L=10)
+[replica-A] RECV   Increment(counter=y, delta=1) <- client-2                      L=2  (received L=1)
+[replica-A] RECV   Get(counter=x) <- client-3                                     L=3  (received L=1)
+[replica-A] APPLY  counter=y -> 1                                                 L=4
+[replica-A] SEND   IncrementReply(new_value=1) -> client-2                        L=5
+[replica-A] RECV   Increment(counter=x, delta=1) <- client-1                      L=6  (received L=1)
+[replica-A] SEND   GetReply(value=0) -> client-3                                  L=7
+[client-2] RECV   IncrementReply(new_value=1) <- replica-A                       L=8  (received L=5)
+[client-3] RECV   GetReply(value=0) <- replica-A                                 L=8  (received L=7)
+[replica-A] APPLY  counter=x -> 1                                                 L=8
+[client-2] SEND   Increment(counter=y, delta=1) -> localhost:50051               L=9
+[client-3] SEND   Get(counter=y) -> localhost:50051                              L=9
+[replica-A] SEND   IncrementReply(new_value=1) -> client-1                        L=9
+[replica-A] RECV   Get(counter=y) <- client-3                                     L=10  (received L=9)
+[client-1] RECV   IncrementReply(new_value=1) <- replica-A                       L=11  (received L=9)
 [replica-A] SEND   GetReply(value=1) -> client-3                                  L=11
 [client-1] SEND   Increment(counter=x, delta=1) -> localhost:50051               L=12
-[client-2] SEND   Increment(counter=y, delta=1) -> localhost:50051               L=12
 [client-3] RECV   GetReply(value=1) <- replica-A                                 L=12  (received L=11)
-[replica-A] RECV   Increment(counter=x, delta=1) <- client-1                      L=13  (received L=12)
-[replica-A] APPLY  counter=x -> 2                                                 L=14
-[replica-A] RECV   Increment(counter=y, delta=1) <- client-2                      L=15  (received L=12)
-[replica-A] APPLY  counter=y -> 2                                                 L=16
+[replica-A] RECV   Increment(counter=y, delta=1) <- client-2                      L=12  (received L=9)
+[replica-A] APPLY  counter=y -> 2                                                 L=13
+[replica-A] SEND   IncrementReply(new_value=2) -> client-2                        L=14
+[client-2] RECV   IncrementReply(new_value=2) <- replica-A                       L=15  (received L=14)
+[replica-A] RECV   Increment(counter=x, delta=1) <- client-1                      L=15  (received L=12)
+[replica-A] APPLY  counter=x -> 2                                                 L=16
 [replica-A] SEND   IncrementReply(new_value=2) -> client-1                        L=17
 [client-1] RECV   IncrementReply(new_value=2) <- replica-A                       L=18  (received L=17)
-[replica-A] SEND   IncrementReply(new_value=2) -> client-2                        L=18
-[client-2] RECV   IncrementReply(new_value=2) <- replica-A                       L=19  (received L=18)

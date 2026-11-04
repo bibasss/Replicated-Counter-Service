@@ -1,3 +1,3 @@
-2026-10-09 15:53:20,399 server replica-B listening on port 57397 (delay_ms=3000, fault=none)
+2026-10-16 17:27:30,961 server replica-B listening on port 57322 (delay_ms=3000, fault=none)
 [replica-B] RECV   Increment(counter=x, delta=1) <- client                        L=3  (received L=2)
 [replica-B] APPLY  counter=x -> 1                                                 L=4
