@@ -1,0 +1,2 @@
+2026-11-10 12:36:00,248 server B listening on port 51993 (delay_ms=0, fault=none, leaseholder=A, peers=A,C)
+2026-11-10 12:36:01,761 server B: LWW merge from C: cart='dc2-version' (ts=1794303361697310, origin=C)

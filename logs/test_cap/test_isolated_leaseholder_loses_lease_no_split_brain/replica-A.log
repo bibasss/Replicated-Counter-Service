@@ -1,0 +1,5 @@
+2026-11-10 12:36:09,140 server A listening on port 39593 (delay_ms=0, fault=none, leaseholder=A, peers=B,C)
+2026-11-10 12:36:09,242 server A: lease for range [a-z] valid
+2026-11-10 12:36:11,459 server A: lease for range [a-z] EXPIRED (no majority)
+2026-11-10 12:36:11,839 server A: CP put user rejected, quorum lost (1/3)
+2026-11-10 12:36:11,844 server A: AP put user='ap-A' accepted (ts=1794303371843881), acks 1/3

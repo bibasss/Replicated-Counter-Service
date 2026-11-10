@@ -1,0 +1,22 @@
+2026-11-10 12:32:19,372 server A listening on port 40185 (delay_ms=0, fault=none, leaseholder=A, peers=B,C)
+2026-11-10 12:32:19,477 server A: lease for range [a-z] valid
+2026-11-10 12:32:20,756 server A: CP put item-0='value-of-item-0' committed, acks 3/3
+2026-11-10 12:32:20,758 server A: CP put item-1='value-of-item-1' committed, acks 3/3
+2026-11-10 12:32:20,759 server A: CP put item-2='value-of-item-2' committed, acks 3/3
+2026-11-10 12:32:20,760 server A: CP put item-3='value-of-item-3' committed, acks 3/3
+2026-11-10 12:32:20,762 server A: CP put item-4='value-of-item-4' committed, acks 3/3
+2026-11-10 12:32:20,763 server A: CP put item-5='value-of-item-5' committed, acks 3/3
+2026-11-10 12:32:20,764 server A: CP put item-6='value-of-item-6' committed, acks 3/3
+2026-11-10 12:32:20,766 server A: CP put item-7='value-of-item-7' committed, acks 3/3
+2026-11-10 12:32:20,767 server A: CP put item-8='value-of-item-8' committed, acks 3/3
+2026-11-10 12:32:20,768 server A: CP put item-9='value-of-item-9' committed, acks 3/3
+2026-11-10 12:32:20,770 server A: CP put item-10='value-of-item-10' committed, acks 3/3
+2026-11-10 12:32:20,771 server A: CP put item-11='value-of-item-11' committed, acks 3/3
+2026-11-10 12:32:20,772 server A: CP put item-12='value-of-item-12' committed, acks 3/3
+2026-11-10 12:32:20,774 server A: CP put item-13='value-of-item-13' committed, acks 3/3
+2026-11-10 12:32:20,775 server A: CP put item-14='value-of-item-14' committed, acks 3/3
+2026-11-10 12:32:20,777 server A: CP put item-15='value-of-item-15' committed, acks 3/3
+2026-11-10 12:32:20,778 server A: CP put item-16='value-of-item-16' committed, acks 3/3
+2026-11-10 12:32:20,780 server A: CP put item-17='value-of-item-17' committed, acks 3/3
+2026-11-10 12:32:20,781 server A: CP put item-18='value-of-item-18' committed, acks 3/3
+2026-11-10 12:32:20,782 server A: CP put item-19='value-of-item-19' committed, acks 3/3

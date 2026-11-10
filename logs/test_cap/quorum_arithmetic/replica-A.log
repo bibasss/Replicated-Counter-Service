@@ -1,0 +1,2 @@
+2026-11-10 12:35:52,968 server A listening on port 51063 (delay_ms=0, fault=none, leaseholder=A, peers=B,C)
+2026-11-10 12:35:53,072 server A: lease for range [a-z] valid

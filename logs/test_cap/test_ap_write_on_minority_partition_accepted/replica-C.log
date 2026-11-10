@@ -1,0 +1,2 @@
+2026-11-10 12:35:58,770 server C listening on port 51679 (delay_ms=0, fault=none, leaseholder=A, peers=A,B)
+2026-11-10 12:36:00,176 server C: AP put cart='dc2-item' accepted (ts=1794303360175650), acks 1/3

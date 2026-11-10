@@ -1,0 +1,4 @@
+2026-11-10 12:36:06,036 server A listening on port 44083 (delay_ms=0, fault=none, leaseholder=A, peers=B,C)
+2026-11-10 12:36:06,139 server A: lease for range [a-z] valid
+2026-11-10 12:36:07,510 server A: CP put config='v2' committed, acks 2/3
+2026-11-10 12:36:09,066 server A: delivered 1 queued write(s) to C

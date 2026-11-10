@@ -1,0 +1,23 @@
+2026-11-10 12:31:52,275 server A listening on port 38253 (delay_ms=0, fault=none, leaseholder=A, peers=B,C)
+2026-11-10 12:31:52,381 server A: lease for range [a-z] valid
+2026-11-10 12:31:53,729 server A: CP put item-0='value-of-item-0' committed, acks 3/3
+2026-11-10 12:31:53,751 server A: CP put item-1='value-of-item-1' committed, acks 3/3
+2026-11-10 12:31:53,773 server A: CP put item-2='value-of-item-2' committed, acks 3/3
+2026-11-10 12:31:53,781 server A: LWW merge from B: item-3='value-of-item-3' (ts=1794303113774280, origin=A)
+2026-11-10 12:31:53,795 server A: CP put item-3='value-of-item-3' committed, acks 3/3
+2026-11-10 12:31:53,817 server A: CP put item-4='value-of-item-4' committed, acks 3/3
+2026-11-10 12:31:53,839 server A: CP put item-5='value-of-item-5' committed, acks 3/3
+2026-11-10 12:31:53,861 server A: CP put item-6='value-of-item-6' committed, acks 3/3
+2026-11-10 12:31:53,883 server A: CP put item-7='value-of-item-7' committed, acks 3/3
+2026-11-10 12:31:53,905 server A: CP put item-8='value-of-item-8' committed, acks 3/3
+2026-11-10 12:31:53,927 server A: CP put item-9='value-of-item-9' committed, acks 3/3
+2026-11-10 12:31:53,949 server A: CP put item-10='value-of-item-10' committed, acks 3/3
+2026-11-10 12:31:53,971 server A: CP put item-11='value-of-item-11' committed, acks 3/3
+2026-11-10 12:31:53,993 server A: CP put item-12='value-of-item-12' committed, acks 3/3
+2026-11-10 12:31:54,015 server A: CP put item-13='value-of-item-13' committed, acks 3/3
+2026-11-10 12:31:54,037 server A: CP put item-14='value-of-item-14' committed, acks 3/3
+2026-11-10 12:31:54,060 server A: CP put item-15='value-of-item-15' committed, acks 3/3
+2026-11-10 12:31:54,083 server A: CP put item-16='value-of-item-16' committed, acks 3/3
+2026-11-10 12:31:54,105 server A: CP put item-17='value-of-item-17' committed, acks 3/3
+2026-11-10 12:31:54,127 server A: CP put item-18='value-of-item-18' committed, acks 3/3
+2026-11-10 12:31:54,151 server A: CP put item-19='value-of-item-19' committed, acks 3/3

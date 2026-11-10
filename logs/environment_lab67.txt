@@ -1,0 +1,5 @@
+Machine: 12th Gen Intel(R) Core(TM) i7-12700, 10 logical CPUs, 19 GB RAM; client and replicas on the same host over localhost
+OS: Ubuntu 22.04.5 LTS, Linux kernel 6.8.0-1070-azure, x86_64
+Python: 3.10.12, virtual environment .venv
+Packages: grpcio 1.85.1, protobuf 7.36.2, pytest 9.2.0; stubs generated with grpcio-tools 1.80.0 (libprotoc 31.1)
+Commands: python3 -m pytest tests/test_cap.py -v; python3 -m pytest -v; python3 perf_cap_bench.py

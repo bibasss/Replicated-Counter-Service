@@ -1,0 +1,4 @@
+2026-11-10 12:36:13,362 server A listening on port 54111 (delay_ms=0, fault=none, leaseholder=A, peers=B,C)
+2026-11-10 12:36:13,464 server A: lease for range [a-z] valid
+2026-11-10 12:36:14,855 server A: CP put order='v1' committed, acks 3/3
+2026-11-10 12:36:14,857 server A: CP put order='v2' committed, acks 3/3

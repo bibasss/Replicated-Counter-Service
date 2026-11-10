@@ -1,0 +1,4 @@
+2026-11-10 12:36:03,817 server A listening on port 41765 (delay_ms=0, fault=none, leaseholder=A, peers=B,C)
+2026-11-10 12:36:03,924 server A: lease for range [a-z] valid
+2026-11-10 12:36:05,464 server A: CP put balance='100' committed, acks 3/3
+2026-11-10 12:36:05,466 server A: CP put balance='250' committed, acks 2/3
