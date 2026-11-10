@@ -66,13 +66,13 @@ Replica options:
 
 ```bash
 python3 -m pytest -v                      # all tests (about 1 minute)
-python3 -m pytest tests/test_counter.py   # Task C2 only (about 2 s)
-python3 -m pytest tests/test_failures.py  # Task C3 only, real replica processes
+python3 -m pytest tests/test_counter.py   # (about 2 s)
+python3 -m pytest tests/test_failures.py  # real replica processes
 ```
 
 Failure tests keep each replica's log in `logs/test_failures/<test name>/`.
 
-## Run the benchmark (Task C4)
+## Run the benchmark 
 
 ```bash
 python3 tests/perf_benchmark.py           # 4 configurations x 2000 requests x 3 repeats
@@ -80,7 +80,7 @@ python3 tests/perf_benchmark.py           # 4 configurations x 2000 requests x 3
 
 Results are printed and written to `logs/perf_results.md`.
 
-## Lamport trace scenario (Task B2)
+## Lamport trace scenario 
 
 ```bash
 python3 tests/lamport_scenario.py
@@ -98,10 +98,10 @@ counter_pb2*.py               generated stubs (do not edit)
 server.py                     replica
 client.py                     client: retries, idempotency keys, quorum writes
 clocks.py                     Lamport clock
-tests/test_counter.py         Task C2 tests
-tests/test_failures.py        Task C3 failure-injection tests
-tests/perf_benchmark.py       Task C4 benchmark
-tests/lamport_scenario.py     Task B2 scenario
+tests/test_counter.py         Tests
+tests/test_failures.py        Failure-injection tests
+tests/perf_benchmark.py       Benchmark
+tests/lamport_scenario.py     Scenario
 logs/                         captured traces, test and benchmark output
 report.pdf                    test report
 ```
