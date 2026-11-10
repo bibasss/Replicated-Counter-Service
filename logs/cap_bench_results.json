@@ -1,0 +1,152 @@
+{
+  "args": {
+    "iterations": 1000,
+    "repeats": 3,
+    "wan_delay_ms": 10,
+    "sustain_s": 7.0,
+    "out": "/home/duster/Desktop/New Folder 8/Replicated-Counter-Service/logs/cap_bench_results.md"
+  },
+  "runs": [
+    {
+      "localhost": {
+        "Linearizable": {
+          "median_ms": 0.9916050000811083,
+          "p95_ms": 1.1576649999369693,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        },
+        "Follower Stale": {
+          "median_ms": 0.4396990000259393,
+          "p95_ms": 0.5234590000782191,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        }
+      },
+      "wan": {
+        "Linearizable": {
+          "median_ms": 22.053466499983188,
+          "p95_ms": 23.105441000097926,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        },
+        "Follower Stale": {
+          "median_ms": 0.4422035001425684,
+          "p95_ms": 0.5179429999770946,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        }
+      }
+    },
+    {
+      "localhost": {
+        "Linearizable": {
+          "median_ms": 0.9859145000064018,
+          "p95_ms": 1.1213579998639034,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        },
+        "Follower Stale": {
+          "median_ms": 0.443824999933895,
+          "p95_ms": 0.5247039998721448,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        }
+      },
+      "wan": {
+        "Linearizable": {
+          "median_ms": 21.746480000047086,
+          "p95_ms": 22.838800000045012,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        },
+        "Follower Stale": {
+          "median_ms": 0.45958650002830836,
+          "p95_ms": 0.543403000165199,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        }
+      }
+    },
+    {
+      "localhost": {
+        "Linearizable": {
+          "median_ms": 1.0021365000056903,
+          "p95_ms": 1.1211700000330893,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        },
+        "Follower Stale": {
+          "median_ms": 0.45550549998552015,
+          "p95_ms": 0.53743100011161,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        }
+      },
+      "wan": {
+        "Linearizable": {
+          "median_ms": 21.724424500007444,
+          "p95_ms": 22.563106999996307,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        },
+        "Follower Stale": {
+          "median_ms": 0.46334050000496063,
+          "p95_ms": 0.5689140000413317,
+          "availability": 100.0,
+          "error_median_ms": NaN,
+          "errors": {},
+          "n": 1000
+        }
+      }
+    }
+  ],
+  "partition": {
+    "Linearizable": {
+      "median_ms": NaN,
+      "p95_ms": NaN,
+      "availability": 0.0,
+      "error_median_ms": 0.5743164998648354,
+      "errors": {
+        "ReplicaUnavailableError": 1000
+      },
+      "n": 1000
+    },
+    "Follower Stale": {
+      "median_ms": 0.5023395000307573,
+      "p95_ms": 0.7098129999576486,
+      "availability": 100.0,
+      "error_median_ms": NaN,
+      "errors": {},
+      "n": 1000
+    }
+  },
+  "sustained": {
+    "seconds": 7.0,
+    "reads": 642,
+    "availability": 70.09345794392523,
+    "last_success_s": 4.907040482999946,
+    "first_refusal_s": 4.91795101699995
+  }
+}
